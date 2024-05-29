@@ -1,0 +1,8 @@
+.chessBoard {
+  width: var(--board-height);
+  height: var(--board-height);
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid black;
+  position: relative;
+}

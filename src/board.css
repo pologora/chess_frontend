@@ -1,0 +1,26 @@
+.tile {
+  flex-basis: 12.5%;
+  display: flex;
+}
+
+.tile--light {
+  background-color: var(--ligth-tile);
+}
+
+.tile--dark {
+  background-color: var(--dark-tile);
+}
+
+.bit {
+  padding: 2px;
+}
+
+.bit--file {
+  align-self: flex-end;
+  text-align: right;
+  width: 100%;
+}
+
+.bit--rank {
+  align-self: flex-start;
+}
