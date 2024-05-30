@@ -1,11 +1,11 @@
 import { getStartPosition, position } from './helpers/helpers';
 
 export type GameState = {
-  position: position;
+  positions: position[];
   turn: 'w' | 'b';
 };
 
 export const initGameState: GameState = {
-  position: getStartPosition(),
+  positions: [getStartPosition()],
   turn: 'w',
 };

@@ -1,10 +1,10 @@
-import { PositionContextProvider } from '../../contexts/PositionContext';
+import { GameContextProvider } from '../../contexts/GameContext';
 
 type GlobalContextsWrapperType = {
   children: React.ReactNode;
 };
 
 const GlobalContextsWrapper = ({ children }: GlobalContextsWrapperType) => {
-  return <PositionContextProvider>{children}</PositionContextProvider>;
+  return <GameContextProvider>{children}</GameContextProvider>;
 };
 export default GlobalContextsWrapper;

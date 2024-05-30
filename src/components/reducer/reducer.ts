@@ -1,19 +1,24 @@
 import { GameState } from '../../constants';
 import { position } from '../../helpers/helpers';
+import { actionTypes } from './actions/actionTypes';
 
 export type Action = {
-  type: 'NEW_MOVE' | 'GET';
+  type: keyof typeof actionTypes;
   payload: position;
 };
 
 export const reducer = (state: GameState, action: Action): GameState => {
   switch (action.type) {
-    case 'NEW_MOVE':
+    case actionTypes.NEW_MOVE: {
+      const turn = state.turn === 'b' ? 'w' : 'b';
+      const positions = [...state.positions, action.payload];
+
       return {
         ...state,
-        position: action.payload,
-        turn: state.turn === 'b' ? 'w' : 'b',
+        positions,
+        turn,
       };
+    }
 
     default:
       return state;

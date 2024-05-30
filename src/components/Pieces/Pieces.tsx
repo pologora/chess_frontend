@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import { copyPosition } from '../../helpers/helpers';
 import Piece from './Piece';
 import style from './Pieces.module.css';
-import { usePositionContext } from '../../contexts/PositionContext';
+import { useGameContext } from '../../contexts/GameContext';
 import { makeNewMove } from '../reducer/actions/move';
 
 const Pieces = () => {
-  const { appState, dispatch } = usePositionContext();
-  const { position } = appState;
-
+  const { appState, dispatch } = useGameContext();
+  const { positions } = appState;
+  const position = positions[positions.length - 1];
   console.log(appState);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ const Pieces = () => {
   };
 
   const onDrop = (event: React.DragEvent) => {
-    const newPosition = copyPosition(appState.position);
+    const newPosition = copyPosition(position);
 
     const [piece, rank, file] = event.dataTransfer.getData('text').split(',');
     const { x, y } = calcCoords(event);
