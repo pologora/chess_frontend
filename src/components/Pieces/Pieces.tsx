@@ -1,34 +1,53 @@
+import { useRef } from 'react';
+import { copyPosition } from '../../helpers/helpers';
 import Piece from './Piece';
 import style from './Pieces.module.css';
+import { usePositionContext } from '../../contexts/PositionContext';
+import { makeNewMove } from '../reducer/actions/move';
 
 const Pieces = () => {
-  const position = new Array(8).fill(null).map(() => new Array(8).fill(null));
-  position[0][0] = 'rook_b';
-  position[0][1] = 'knight_b';
-  position[0][2] = 'bishop_b';
-  position[0][3] = 'queen_b';
-  position[0][4] = 'king_b';
-  position[0][5] = 'bishop_b';
-  position[0][6] = 'knight_b';
-  position[0][7] = 'rook_b';
+  const { appState, dispatch } = usePositionContext();
+  const { position } = appState;
 
-  position[7][0] = 'rook_w';
-  position[7][1] = 'knight_w';
-  position[7][2] = 'bishop_w';
-  position[7][3] = 'queen_w';
-  position[7][4] = 'king_w';
-  position[7][5] = 'bishop_w';
-  position[7][6] = 'knight_w';
-  position[7][7] = 'rook_w';
+  console.log(appState);
 
-  for (let i = 0; i < 8; i++) {
-    position[1][i] = 'pawn_b';
-    position[6][i] = 'pawn_w';
-  }
-  console.log(position);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const calcCoords = (event: React.DragEvent) => {
+    if (!ref.current) {
+      return { x: 0, y: 0 };
+    }
+
+    const { left, top, width } = ref.current.getBoundingClientRect();
+    const size = width / 8;
+    const y = Math.floor((event.clientX - left) / size);
+    const x = Math.floor((event.clientY - top) / size);
+    return { x, y };
+  };
+
+  const onDrop = (event: React.DragEvent) => {
+    const newPosition = copyPosition(appState.position);
+
+    const [piece, rank, file] = event.dataTransfer.getData('text').split(',');
+    const { x, y } = calcCoords(event);
+
+    newPosition[Number(rank)][Number(file)] = '';
+    newPosition[x][y] = piece;
+
+    dispatch(makeNewMove(newPosition));
+  };
+
+  const onDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+  };
 
   return (
-    <div className={style.pieces}>
+    <div
+      ref={ref}
+      className={style.pieces}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+    >
       {position.map((r, rank) =>
         r.map((_, file) => {
           return position[rank][file] ? (
@@ -36,7 +55,7 @@ const Pieces = () => {
               key={rank + file}
               rank={rank}
               file={file}
-              piece={position[rank][file]}
+              piece={position[rank][file] as string}
             />
           ) : null;
         }),

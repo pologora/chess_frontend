@@ -11,6 +11,7 @@
   height: 12.5%;
   position: absolute;
   background-size: 100%;
+  z-index: 10;
 }
 
 .rook_b {
@@ -23,7 +24,7 @@
   background-image: url('../../assets/images/bishop_w.png');
 }
 .bishop_b {
-  background-image: url('../../assets/images/bb.png');
+  background-image: url('../../assets/images/bishop_b.png');
 }
 .king_w {
   background-image: url('../../assets/images/king_w.png');
